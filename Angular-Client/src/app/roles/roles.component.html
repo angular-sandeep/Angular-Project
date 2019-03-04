@@ -1,0 +1,50 @@
+<br>
+<br>
+<br>
+<h3 class="text-center">Roles</h3>
+<hr />
+<form
+  class="col-md-8 offset-md-2"
+  name="roleForm"
+  [formGroup]="roleForm"
+  (submit)="save()"
+>
+  <!-- role name-->
+  <div class="form-group">
+    <label for="Role">Role Name</label>
+    <input
+      type="text"
+      name="Role"
+      class="form-control"
+      id="Role"
+      formControlName="Role"
+      (change)="checkUniqueRole()"
+    />
+    <div
+      *ngIf="roleForm.controls.Role.dirty && !roleForm.controls.Role.valid"
+      class="alert alert-danger"
+    >
+      <p *ngIf="newUserForm.controls.Role.errors.required">
+        Role is required
+      </p>
+    </div>
+    <div class="alert alert-danger" *ngIf="uniqueRole">
+      <p>Role Must be Unique</p>
+    </div>
+  </div>
+
+  <div class="form-group" >
+    <input
+      type="button"
+      value="Cancel"
+      class="btn btn-danger"
+      (click)="cancel()"
+    />
+    <input
+      type="submit"
+      value="Add Role"
+      [disabled]="!roleForm.valid"
+      class="btn btn-success"
+    />
+  </div>
+</form>

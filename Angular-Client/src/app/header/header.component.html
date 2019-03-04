@@ -1,0 +1,45 @@
+<nav class="navbar fixed-top navbar-expand-md custom-navbar navbar-dark">
+  <h3 routerLink="/auth/user-status">
+    ~ <span style="color:red">K</span>nowledge
+    <span style="color:red">B</span>ase <span style="color:red">||</span>
+  </h3>
+  <!-- <button
+    class="navbar-toggler navbar-toggler-right custom-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#collapsibleNavbar"
+  >
+    <span class="navbar-toggler-icon "></span>
+  </button> -->
+  <div class="collapse navbar-collapse " id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto" *ngIf="!user">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/auth/user"><b>New User</b></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/auth/user-status"
+          ><b>User's Status</b></a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/auth/person-status"
+          ><b>Person's Status</b></a
+        >
+      </li>
+      <li class="nav-item" *ngIf="operator">
+        <a class="nav-link" routerLink="/auth/roles"><b>Roles</b></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/auth/logout"><b>|| Logout</b></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto" *ngIf="user">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/auth/logout"><b>|| Logout</b></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

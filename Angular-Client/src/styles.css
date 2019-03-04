@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+label{
+  font-weight: bold;
+}
+
+.required{
+  color: red;
+  font-size: 1.2rem;
+}
+
+input[type=button], input[type=submit], input[type=reset] {
+  margin:10px;
+}
+
+input{
+  height: 40px;
+}

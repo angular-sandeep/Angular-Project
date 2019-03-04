@@ -1,0 +1,40 @@
+<br /><br /><br />
+<div class="container">
+  <div class="form-group">
+    <label for="Stat">User's Status</label>
+    <select
+      name="Stat"
+      class="form-control"
+      id="Stat"
+      [(ngModel)]="type"
+      (change)="filter(type)"
+    >
+      <option *ngFor="let s of status" value="{{ s }}">{{ s }}</option>
+    </select>
+  </div>
+
+  <table class="table table-striped table-border prd">
+    <thead>
+      <tr>
+        <th *ngFor="let c of tableHeaders">
+          <span>{{ c }}</span>
+        </th>
+        <th *ngIf="action">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of users; let i = index">
+        <td *ngFor="let c of tableHeaders" (click)="getSelectedUser(u)">
+          <span>{{ u[c] }}</span>
+        </td>
+        <td *ngIf="action">
+          <span class="btn btn-link" (click)="approved(u)">Approved</span> /
+          <span class="btn btn-link" (click)="rejected(u)">Rejected</span>
+        </td>
+      </tr>
+      <div *ngIf="!users">
+        <p>No Records</p>
+      </div>
+    </tbody>
+  </table>
+</div>
