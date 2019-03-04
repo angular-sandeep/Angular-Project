@@ -75,7 +75,7 @@ export class UserStatusComponent implements OnInit {
   }
 
   approved(u): void {
-    const user = { UserId: u.UserId, isAuthorized: 'Approve' };
+    const user = { UserId: u.UserId, isAuthorized: 'Approved' };
     this._newUserService.userApproval(user).subscribe(
       (resp: Response) => {
         if (resp.json().status == 200) {

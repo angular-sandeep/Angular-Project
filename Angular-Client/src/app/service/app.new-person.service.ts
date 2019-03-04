@@ -79,10 +79,6 @@ export class NewPersonService {
 
   // create new person
   updatePerson(person): Observable<Response> {
-
-    console.log("update called");
-    console.log(person);
-
     let resp: Observable<Response>;
     const header: Headers = new Headers({ 'Content-Type': 'application/json' });
     header.append('AUTHORIZATION', localStorage.getItem('token'));

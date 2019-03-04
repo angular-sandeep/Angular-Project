@@ -87,7 +87,7 @@ module.exports = function() {
             res.send({ status: res.statusCode, message: "Unauthorized user" });
             res.end();
           }
-        }
+        } 
       );
       /* #endregion */
     }

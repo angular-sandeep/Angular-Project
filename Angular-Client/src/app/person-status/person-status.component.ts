@@ -73,13 +73,11 @@ export class PersonStatusComponent implements OnInit {
   }
 
   getSelectedPerson(person: Person): void {
-    //alert("xxx" + JSON.stringify(person));
-    alert("test");
+
   }
 
   approved(p: Person): void {
-    alert("$$$$$$$$$$$$$$$$$$");
-    const person = { PersonId: p.PersonId, isAuthorized: "Approve" };
+    const person = { PersonId: p.PersonId, isAuthorized: "Approved" };
     this._newPersonService.personApproval(person).subscribe(
       (resp: Response) => {
         if (resp.json().status == 200) {

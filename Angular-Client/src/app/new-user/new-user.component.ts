@@ -97,10 +97,15 @@ export class NewUserComponent implements OnInit {
   cancel() {}
 
   save() {
-    this.user = this.newUserForm.value;
-    //alert(JSON.stringify(this.user));
-
-    this._newUserService.createUser(this.user).subscribe(
+    let user = {
+      UserName : this.newUserForm.value.UserName,
+      Email: this.newUserForm.value.Email,
+      Mobile: this.newUserForm.value.Mobile,
+      Password: this.newUserForm.value.Password,
+      Role: this.newUserForm.value.Role,
+      CreatedBy: localStorage.getItem("_v_it")
+    };
+    this._newUserService.createUser(user).subscribe(
       (resp: Response) => {
         if (resp.json().status == 200) {
           this._router.navigate([`/auth/person/${resp.json().uid}`]);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-
+import { Router } from "@angular/router";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -9,7 +9,7 @@ export class HeaderComponent implements OnInit {
   operator: boolean;
   user: boolean;
 
-  constructor() {
+  constructor(private _router: Router) {
     this.operator = true;
     this.user = false;
   }
@@ -20,6 +20,9 @@ export class HeaderComponent implements OnInit {
     }
     if (localStorage.getItem("_v_it") === "3") {
       this.user = true;
+      this._router.navigate([
+        `/auth/person/${localStorage.getItem("userid")}/1`
+      ]);
     }
   }
 }
