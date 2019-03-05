@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { RolesService } from './../service/app.roles.service';
+import { Response } from '@angular/http';
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
@@ -9,26 +10,68 @@ import { Router } from '@angular/router';
 })
 export class RolesComponent implements OnInit {
   // error message
-  uniqueRole: boolean = false;
+  uniqueRole: boolean;
 
   // define formgroup
   roleForm: FormGroup;
 
   Role: string;
+  roles;
 
-  constructor(private _router: Router) {
+  constructor(private _router: Router, private _roleService: RolesService) {
     this.roleForm = new FormGroup({
       Role: new FormControl(this.Role, Validators.required)
     });
+    this.uniqueRole = false;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._roleService.getRoles().subscribe(
+      (resp: Response) => {
+        if (resp.json().status == 200) {
+          this.roles = resp.json().roles;
+        }
+      },
+      error => {
+        console.log(`Error occurred :==>> ${error}`);
+      }
+    );
+  }
 
-  cancel() {}
+  cancel() {
+    this._router.navigate(['/auth']);
+  }
 
+  // creating new role
   save() {
     this.Role = this.roleForm.value;
-    alert(JSON.stringify(this.Role));
-    //this._router.navigate(['/auth/person']);
+    this._roleService.createRole(this.Role).subscribe(
+      (resp: Response) => {
+        if (resp.json().status == 200) {
+          this.roles = resp.json().roles;
+        }
+      },
+      error => {
+        console.log(`Error occurred :==>> ${error}`);
+      }
+    );
+  }
+
+  // checking existing role
+  checkUniqueRole() {
+    this.Role = this.roleForm.value;
+    this._roleService.checkRole(this.Role).subscribe(
+      (resp: Response) => {
+        if (resp.json().status == 200) {
+          this.uniqueRole = true;
+        }
+      },
+      error => {
+        if (error.status === 404) {
+          this.uniqueRole = false;
+        }
+        console.log(`Error occurred :==>> ${error}`);
+      }
+    );
   }
 }
