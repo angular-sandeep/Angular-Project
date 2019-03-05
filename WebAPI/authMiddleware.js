@@ -1,11 +1,20 @@
 const userModel = require("./model/users");
 const roleModel = require("./model/roles");
+const loginStatusModel = require('./model/loginstatus');
+// const iplocate = require('node-iplocate');
 
 const jwt = require("jsonwebtoken");
 const tokenSetting = require("./config/token");
 
 module.exports = function() {
   return function(req, res, next) {
+
+    
+    //console.log(req.connection.remoteAddress);
+    // iplocate('10.0.0.87').then((results) => {
+    //   console.log(results);
+    // });
+    
     // "REQUEST" other than "CREATE USER" or "AUTH USER"
     if (!(req.url == "/api/user/auth")) {
 
@@ -62,6 +71,20 @@ module.exports = function() {
           if (data != undefined) {
             
             if (data.isAuthorized === "Approved") {
+
+              // let loginStatus = {
+              //   UserName: data.UserName,
+              //   LoginForm: req.connection,
+              //   IPAddress: req.connection.remoteAddress
+              // }
+              // loginStatusModel.create().exec((err,d) => {
+              //   if(err)
+              //   {
+              //     console.log(err);
+              //     return
+              //   }
+              //   console.log(d);
+              // });
               // token creation
               var token = jwt.sign({ user }, tokenSetting.jwtSecret, {
                 expiresIn: 3600

@@ -34,22 +34,33 @@ router.post("/create", (request, response) => {
     Education: request.body.Education,
     BirthSign: request.body.BirthSign
   };
-
   //console.log(Person);
   if (request.body.CreatedBy == 1) {
     PersonModel.create(Person, (err, res) => {
       if (err) {
-        response.send({ status: 500, error: err });
+        response.send({
+          status: 500,
+          error: err
+        });
       } else {
-        response.send({ status: 200, data: res });
+        response.send({
+          status: 200,
+          data: res
+        });
       }
     });
   } else {
     TempPersonModel.create(Person, (err, res) => {
       if (err) {
-        response.send({ status: 500, error: err });
+        response.send({
+          status: 500,
+          error: err
+        });
       } else {
-        response.send({ status: 200, data: res });
+        response.send({
+          status: 200,
+          data: res
+        });
       }
     });
   }
@@ -61,46 +72,46 @@ router.post("/create", (request, response) => {
 router.get("/:pid", (request, response) => {
   // this should be based on approved and pending status
   var pid = request.params.pid;
-  PersonModel.find({ PersonId: pid }, (err, data) => {
+  PersonModel.find({
+    PersonId: pid
+  }, (err, data) => {
     if (err) {
-      response.send({ status: 500, err: err });
+      response.send({
+        status: 500,
+        err: err
+      });
     } else if (data) {
-      response.send({ status: 200, data: data });
+      response.send({
+        status: 200,
+        data: data
+      });
     } else {
-      response.send({ status: 404, message: "No Data Found" });
+      response.send({
+        status: 404,
+        message: "No Data Found"
+      });
     }
   });
 });
-
-/*
-  getting all person Approved profile
-*/
-// router.get("/", (request, response) => {
-//   PersonModel.find(
-//     {},
-//     { _id: 0, PersonId: 1, FullName: 1, Gender: 1, City: 1, State: 1 }
-//   ).exec((err, data) => {
-//     if (err) {
-//       response.send({ status: 500, err: err });
-//     } else if (data) {
-//       response.send({ status: 200, data: data });
-//     } else {
-//       response.send({ status: 404, message: "No Data Found" });
-//     }
-//   });
-// });
 
 /*
   getting all person profile based on status like "Pending, Approved and Reject"
 */
 router.post("/", (req, res) => {
   if (req.body.isAuthorized === "Approved") {
-    PersonModel.find(
-      {},
-      { _id: 0, PersonId: 1, FullName: 1, Gender: 1, City: 1, State: 1 }
-    ).exec((err, person) => {
+    PersonModel.find({}, {
+      _id: 0,
+      PersonId: 1,
+      FullName: 1,
+      Gender: 1,
+      City: 1,
+      State: 1
+    }).exec((err, person) => {
       if (err) {
-        response.send({ status: 500, err: err });
+        response.send({
+          status: 500,
+          err: err
+        });
       } else {
         res.send({
           status: 200,
@@ -111,12 +122,19 @@ router.post("/", (req, res) => {
     });
   } else if (req.body.isAuthorized === "Pending") {
     // have to use temp person collection
-    TempPersonModel.find(
-      {},
-      { _id: 0, PersonId: 1, FullName: 1, Gender: 1, City: 1, State: 1 }
-    ).exec((err, person) => {
+    TempPersonModel.find({}, {
+      _id: 0,
+      PersonId: 1,
+      FullName: 1,
+      Gender: 1,
+      City: 1,
+      State: 1
+    }).exec((err, person) => {
       if (err) {
-        response.send({ status: 500, err: err });
+        response.send({
+          status: 500,
+          err: err
+        });
       } else {
         res.send({
           status: 200,
@@ -134,15 +152,22 @@ router.post("/", (req, res) => {
 router.post("/approve", (request, response) => {
   // getting Person Id
   var pid = request.body.PersonId;
-  
-  if (request.body.isAuthorized === "Approve") {
+
+  if (request.body.isAuthorized === "Approved") {
     // getting and removing data from temp_person collection
-    TempPersonModel.findOne({ PersonId: pid }, { _id: 0, __v: 0 }).exec(
+    TempPersonModel.findOne({
+      PersonId: pid
+    }, {
+      _id: 0,
+      __v: 0
+    }).exec(
       (err, person) => {
         if (err) {
-          response.send({ status: 500, err: err });
+          response.send({
+            status: 500,
+            err: err
+          });
         } else if (person) {
-          //console.log(person);
 
           // preparing person model from temp_person model
           let Auth_Person = {
@@ -163,143 +188,200 @@ router.post("/approve", (request, response) => {
             Education: person.Education
           };
 
-          // checking data available in person collection or not
-          PersonModel.findOne({ PersonId: pid }).exec((err, data) => {
+
+          PersonModel.findOneAndUpdate({
+            PersonId: Auth_Person.PersonId
+          }, Auth_Person, {
+            upsert: true
+          }, function (err, doc) {
             if (err) {
-              console.log(err);
-              response.send({ status: 500, err: err });
-              return;
-            }
-
-            if (data === null) {
-              console.log("creating new user");
-
-              // inserting new entry into person collection
-              PersonModel.create(Auth_Person, (err) => {
-                if (err) {
-                  response.send({ status: 500, err: err });
-                } else {
-                  console.log("moved data to person/ new creation");
-
-                  TempPersonModel.remove({ PersonId: pid }).exec(err =>
-                    console.log("deleted")
-                  );
-                  // getting all remaining temp person
-                  TempPersonModel.find(
-                    {},
-                    {
-                      _id: 0,
-                      PersonId: 1,
-                      FullName: 1,
-                      Gender: 1,
-                      City: 1,
-                      State: 1
-                    }
-                  ).exec((err, data) => {
-                    if (err) {
-                      response.send({ status: 500, err: err });
-                    }
-                    if (data) {
-                      console.log(data);
-
-                      response.send({
-                        status: 200,
-                        person: data,
-                        header: [
-                          "Person Id",
-                          "Full Name",
-                          "Gender",
-                          "City",
-                          "State"
-                        ]
-                      });
-                    } else {
-                      response.send({
-                        status: 500,
-                        message: "some error occured"
-                      });
-                    }
-                  });
-                }
+              return res.send(500, {
+                error: err
               });
-            } else {
-              // inserting new entry into person collection
-              console.log("updating user");
-
-              PersonModel.findOneAndUpdate(
-                { PersonId: Auth_Person.PersonId },
-                Auth_Person,
-                (err, d) => {
-                  if (err) {
-                    response.send({ status: 500, err: err });
-                  } else {
-                    console.log("moved data to person/ update");
-
-                    TempPersonModel.remove({ PersonId: pid }).exec(err =>
-                      console.log("deleted")
-                    );
-                    // getting all remaining temp person
-                    TempPersonModel.find(
-                      {},
-                      {
-                        _id: 0,
-                        PersonId: 1,
-                        FullName: 1,
-                        Gender: 1,
-                        City: 1,
-                        State: 1
-                      }
-                    ).exec((err, data) => {
-                      if (err) {
-                        response.send({ status: 500, err: err });
-                      }
-                      if (data) {
-                        response.send({
-                          status: 200,
-                          person: data,
-                          header: [
-                            "Person Id",
-                            "Full Name",
-                            "Gender",
-                            "City",
-                            "State"
-                          ]
-                        });
-                      } else {
-                        response.send({
-                          status: 500,
-                          message: "some error occured"
-                        });
-                      }
-                    });
-                  }
-                }
-              );
             }
+            TempPersonModel.remove({
+              PersonId: pid
+            }).exec(err =>
+              console.log("deleted")
+            );
+            // getting all remaining temp person
+            TempPersonModel.find({}, {
+              _id: 0,
+              PersonId: 1,
+              FullName: 1,
+              Gender: 1,
+              City: 1,
+              State: 1
+            }).exec((err, data) => {
+              if (err) {
+                response.send({
+                  status: 500,
+                  err: err
+                });
+              }
+              if (data) {
+                response.send({
+                  status: 200,
+                  person: data,
+                  header: [
+                    "Person Id",
+                    "Full Name",
+                    "Gender",
+                    "City",
+                    "State"
+                  ]
+                });
+              } else {
+                response.send({
+                  status: 500,
+                  message: "some error occured"
+                });
+              }
+            });
           });
+          // checking data available in person collection or not
+          // PersonModel.findOne({ PersonId: pid }).exec((err, data) => {
+          //   if (err) {
+          //     console.log(err);
+          //     response.send({ status: 500, err: err });
+          //     return;
+          //   }
+
+          //   if (data === null) {
+          //     console.log("creating new user");
+
+          //     // inserting new entry into person collection
+          //     PersonModel.create(Auth_Person, (err) => {
+          //       if (err) {
+          //         response.send({ status: 500, err: err });
+          //       } else {
+          //         console.log("moved data to person/ new creation");
+
+          //         TempPersonModel.remove({ PersonId: pid }).exec(err =>
+          //           console.log("deleted")
+          //         );
+          //         // getting all remaining temp person
+          //         TempPersonModel.find(
+          //           {},
+          //           {
+          //             _id: 0,
+          //             PersonId: 1,
+          //             FullName: 1,
+          //             Gender: 1,
+          //             City: 1,
+          //             State: 1
+          //           }
+          //         ).exec((err, data) => {
+          //           if (err) {
+          //             response.send({ status: 500, err: err });
+          //           }
+          //           if (data) {
+          //             console.log(data);
+
+          //             response.send({
+          //               status: 200,
+          //               person: data,
+          //               header: [
+          //                 "Person Id",
+          //                 "Full Name",
+          //                 "Gender",
+          //                 "City",
+          //                 "State"
+          //               ]
+          //             });
+          //           } else {
+          //             response.send({
+          //               status: 500,
+          //               message: "some error occured"
+          //             });
+          //           }
+          //         });
+          //       }
+          //     });
+          //   } else {
+          //     // inserting new entry into person collection
+          //     console.log("updating user");
+
+          //     PersonModel.findOneAndUpdate(
+          //       { PersonId: Auth_Person.PersonId },
+          //       Auth_Person,
+          //       (err, d) => {
+          //         if (err) {
+          //           response.send({ status: 500, err: err });
+          //         } else {
+          //           console.log("moved data to person/ update");
+
+          //           TempPersonModel.remove({ PersonId: pid }).exec(err =>
+          //             console.log("deleted")
+          //           );
+          //           // getting all remaining temp person
+          //           TempPersonModel.find(
+          //             {},
+          //             {
+          //               _id: 0,
+          //               PersonId: 1,
+          //               FullName: 1,
+          //               Gender: 1,
+          //               City: 1,
+          //               State: 1
+          //             }
+          //           ).exec((err, data) => {
+          //             if (err) {
+          //               response.send({ status: 500, err: err });
+          //             }
+          //             if (data) {
+          //               response.send({
+          //                 status: 200,
+          //                 person: data,
+          //                 header: [
+          //                   "Person Id",
+          //                   "Full Name",
+          //                   "Gender",
+          //                   "City",
+          //                   "State"
+          //                 ]
+          //               });
+          //             } else {
+          //               response.send({
+          //                 status: 500,
+          //                 message: "some error occured"
+          //               });
+          //             }
+          //           });
+          //         }
+          //       }
+          //     );
+          //   }
+          // });
         } else {
-          response.send({ status: 404, message: "No Data Found" });
+          response.send({
+            status: 404,
+            message: "No Data Found"
+          });
         }
       }
     );
   } else {
-    TempPersonModel.remove({ PersonId: pid }).exec(err =>
+    // rejecting
+    TempPersonModel.remove({
+      PersonId: pid
+    }).exec(err =>
       console.log("deleted")
     );
     // getting all remaining temp person
-    TempPersonModel.find(
-      {},
-      {
-        _id: 0,
-        PersonId: 1,
-        FullName: 1,
-        Gender: 1,
-        City: 1,
-        State: 1
-      }
-    ).exec((err, data) => {
+    TempPersonModel.find({}, {
+      _id: 0,
+      PersonId: 1,
+      FullName: 1,
+      Gender: 1,
+      City: 1,
+      State: 1
+    }).exec((err, data) => {
       if (err) {
-        response.send({ status: 500, err: err });
+        response.send({
+          status: 500,
+          err: err
+        });
       }
       if (data) {
         response.send({
@@ -356,22 +438,37 @@ router.put("/update", (request, response) => {
   console.log(Person);
 
   if (request.body.CreatedBy == 1) {
-    PersonModel.update({ PersonId: Person.PersonId }, Person, (err, res) => {
+    PersonModel.update({
+      PersonId: Person.PersonId
+    }, Person, (err, res) => {
       if (err) {
-        response.send({ status: 500, error: err });
+        response.send({
+          status: 500,
+          error: err
+        });
       } else {
-        response.send({ status: 200, data: res });
+        response.send({
+          status: 200,
+          data: res
+        });
       }
     });
   } else {
-    TempPersonModel.create(
-      { PersonId: Person.PersonId },
+    TempPersonModel.create({
+        PersonId: Person.PersonId
+      },
       Person,
       (err, res) => {
         if (err) {
-          response.send({ status: 500, error: err });
+          response.send({
+            status: 500,
+            error: err
+          });
         } else {
-          response.send({ status: 200, data: res });
+          response.send({
+            status: 200,
+            data: res
+          });
         }
       }
     );

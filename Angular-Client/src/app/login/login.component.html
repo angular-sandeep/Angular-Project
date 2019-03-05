@@ -28,6 +28,7 @@
             formControlName="UserName"
             class="form-control"
             placeholder="Username"
+            autocomplete="off"
           />
           <div
             *ngIf="
@@ -52,6 +53,7 @@
             class="form-control"
             formControlName="Password"
             placeholder="Password"
+            autocomplete="off"
           /><div
           *ngIf="
             loginForm.controls.Password.dirty &&

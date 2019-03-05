@@ -38,7 +38,7 @@ app.use(authMiddleware());
 app.use("/api/users", usersRouter);
 app.use("/api/person", personRouter);
 app.use("/api/roles", rolesRouter);
-app.use("/api/loginStatus", loginStatusRouter);
+// app.use("/api/loginStatus", loginStatusRouter);
 
 /* #endregion */
 

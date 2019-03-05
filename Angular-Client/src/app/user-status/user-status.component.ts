@@ -31,7 +31,7 @@ export class UserStatusComponent implements OnInit {
   ) {
     this.users = new Array<User>();
     this.tableHeaders = ['UserId', 'UserName', 'Email', 'Mobile'];
-    this.status = ['Pending', 'Approved', 'Rejected'];
+    this.status = ['Pending', 'Approved', 'Rejected', 'All'];
     this.type = 'Pending';
   }
 

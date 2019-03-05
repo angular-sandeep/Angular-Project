@@ -8,4 +8,4 @@ export class User {
   ) {}
 }
 
-export const Roles = ['Admin', 'Operator', 'Access User'];
+export const Roles = ['Admin', 'Operator', 'AccessUser'];

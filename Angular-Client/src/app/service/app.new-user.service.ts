@@ -21,7 +21,7 @@ export class NewUserService {
     header.append('AUTHORIZATION', localStorage.getItem('token'));
     const options: RequestOptions = new RequestOptions();
     options.headers = header;
-    resp = this.http.get(`${this.url}/api/users`,options);
+    resp = this.http.get(`${this.url}/api/users`, options);
     return resp;
   }
 
@@ -32,7 +32,11 @@ export class NewUserService {
     header.append('AUTHORIZATION', localStorage.getItem('token'));
     const options: RequestOptions = new RequestOptions();
     options.headers = header;
-    resp = this.http.post(`${this.url}/api/users`,JSON.stringify(user),options);
+    if (user.isAuthorized !== 'All') {
+      resp = this.http.post(`${this.url}/api/users`, JSON.stringify(user), options);
+    } else {
+      resp = this.http.get(`${this.url}/api/users`, options);
+    }
     return resp;
   }
 

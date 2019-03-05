@@ -13,6 +13,7 @@ export class LogoutComponent implements OnInit {
     localStorage.removeItem('token');
     localStorage.removeItem('_v_it');
     localStorage.removeItem('userid');
+    localStorage.removeItem('user');
     this._router.navigate(['']);
   }
 
