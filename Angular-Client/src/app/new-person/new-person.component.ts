@@ -100,7 +100,7 @@ export class NewPersonComponent implements OnInit {
       this._newPersonService.getPersonsById(this.PersonId).subscribe(
         (resp: Response) => {
           if (resp.json().status == 200) {
-            let person = resp.json().data[0];
+            const person = resp.json().data[0];
             this.person = new Person(
               this.PersonId,
               person.FullName.FirstName,

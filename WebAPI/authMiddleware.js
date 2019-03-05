@@ -60,12 +60,14 @@ module.exports = function() {
             return;
           }
           if (data != undefined) {
+            
             if (data.isAuthorized === "Approved") {
               // token creation
               var token = jwt.sign({ user }, tokenSetting.jwtSecret, {
                 expiresIn: 3600
               });
               let userId = data.UserId;
+              let username = data.UserName;
 
               roleModel.findOne({ RoleId: data.RoleId }).exec((err, data) => {
                 // TOKEN SEND TO CLIENT
@@ -73,7 +75,8 @@ module.exports = function() {
                   status: 200,
                   token: `Bearer ${token}`,
                   role: data.RoleType,
-                  UserId: userId
+                  UserId: userId,
+                  UN: username 
                 });
               });
             }
