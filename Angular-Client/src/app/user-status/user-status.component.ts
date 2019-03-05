@@ -16,6 +16,7 @@ export class UserStatusComponent implements OnInit {
 
   // filter type
   type: string;
+  public searchText: string;
   status: Array<string>;
 
   // to set table header

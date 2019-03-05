@@ -1,14 +1,15 @@
 <br /><br /><br />
 <div class="container">
+  <!-- search list-->
+  <div class="form-group">
+    <label for="search">Search</label>
+    <input name="search" class="form-control" id="search" [(ngModel)]="searchText" placeholder="Search by UserId, UserName, Email, Mobile ">
+  </div>
+
+  <!-- dropdown list-->
   <div class="form-group">
     <label for="Stat">User's Status</label>
-    <select
-      name="Stat"
-      class="form-control"
-      id="Stat"
-      [(ngModel)]="type"
-      (change)="filter(type)"
-    >
+    <select name="Stat" class="form-control" id="Stat" [(ngModel)]="type" (change)="filter(type)">
       <option *ngFor="let s of status" value="{{ s }}">{{ s }}</option>
     </select>
   </div>
@@ -16,6 +17,7 @@
   <table class="table table-striped table-border prd">
     <thead>
       <tr>
+        <th><span>S No.</span></th>
         <th *ngFor="let c of tableHeaders">
           <span>{{ c }}</span>
         </th>
@@ -23,8 +25,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let u of users; let i = index">
-        <td *ngFor="let c of tableHeaders" (click)="getSelectedUser(u)">
+      <tr *ngFor="let u of users | userFilterPipe: {UserId: searchText, UserName:searchText, Email: searchText, Mobile: searchText}; let i = index">
+        <td><span>{{ i + 1 }}</span></td>
+        <td *ngFor="let c of tableHeaders"  (click)="getSelectedUser(u)">
           <span>{{ u[c] }}</span>
         </td>
         <td *ngIf="action">
