@@ -18,7 +18,14 @@
    + `New-User-Component`  --> having `new-user` creation form with validation.
    + `Person-Status-Component`  --> having `person-status` table component. This component will display person information based on person status using `Drop-down` like `Pending` and `Approved`. Default is `Pending`. 
    + `User-Status-Component`  --> having `user-status` table component. <br>
-     ----- This component will display user information based on user status using `Drop-down` like `Pending`, `Approved`, `Rejected` and `All`. Default is `Pending`.
-     ---- This uses `searching` functionality. This functionality searches based on `UserId, UserName, Email, and Mobile`.
-     ---- `Search functionality` is working based on `drop-down list` selection options like `Pending`, `Approved`, `Rejected` and `All`.
-
+     ----- This component will display user information based on user status using `Drop-down` like `Pending`, `Approved`, `Rejected` and `All`. Default is `Pending`.<br>
+     ---- This uses `searching` functionality. This functionality searches based on `UserId, UserName, Email, and Mobile`.<br>
+     ---- `Search functionality` is working based on `drop-down list` selection options like `Pending`, `Approved`, `Rejected` and `All`.<br>
+     ---- `click on` any `row` and get all information of selected person and then you can `update` by modifying and clicking on `update button`. 
+   + `Roles`  --> having `role adding form` and `all-roles-list` functionality.
+   + `service` --> having API calling logices <br>
+    1. login-service  --> having login API calling functionality
+    2. new-person-service  --> having new-person API calling functionality
+    3. new-user-service  --> having new-user API calling functionality
+    4. roles-service  --> having roles  API calling functionality
+   + `pipe`  --> having `filter-pipe` for `searching`. This pipe used on `User-Status-Component`.
