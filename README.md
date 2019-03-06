@@ -40,7 +40,7 @@
   - `model`   --> having different models for mongodb schema `user, person, temp-person, role, login`.
   - `routes`  --> having different routes files for `login, person, user, roles`. This is having all API `CRUD` logices.
   -  `authmiddleware.js`  -->  This file is used to `Authentication` user. (`Authorization maintained at client side`).<br>
-                **If user not Authenticated, user not allowed to enter into server API routes.
+                **If user not Authenticated, user not allowed to access server API routes.
   - `server.js`  --> this is `starting` file for server execution.
   - `package.json`  --> this is project descriptor file.
      
