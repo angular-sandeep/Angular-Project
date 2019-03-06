@@ -22,10 +22,13 @@
      ---- This uses `searching` functionality. This functionality searches based on `UserId, UserName, Email, and Mobile`.<br>
      ---- `Search functionality` is working based on `drop-down list` selection options like `Pending`, `Approved`, `Rejected` and `All`.<br>
      ---- `click on` any `row` and get all information of selected person and then you can `update` by modifying and clicking on `update button`. 
-   + `Roles`  --> having `role adding form` and `all-roles-list` functionality.
+   + `Roles`  --> having `role adding form` and `all-roles-list` functionality. This functionality can only seen and used by `Admin`.
    + `service` --> having API calling logices <br>
     1. login-service  --> having login API calling functionality
     2. new-person-service  --> having new-person API calling functionality
     3. new-user-service  --> having new-user API calling functionality
     4. roles-service  --> having roles  API calling functionality
    + `pipe`  --> having `filter-pipe` for `searching`. This pipe used on `User-Status-Component`.
+   + `routing-module`  --> having all roting path configuration.
+   <hr>
+##### On `user-status` and `person-status` components having, `Approve / Reject` link, that will display (only for pending enteris ** not for already Approved / Rejected enteris) which can only accessiable by `Admin.`
