@@ -32,3 +32,15 @@
    + `routing-module`  --> having all roting path configuration.
    <hr>
 ##### On `user-status` and `person-status` components having, `Approve / Reject` link, that will display (only for pending enteris ** not for already Approved / Rejected enteris) which can only accessiable by `Admin` (not accessibale by `Operator and AccessUser`).
+<hr>
+
+### WebAPI Directory Structure: -
+  
+  - `config`  --> having node server API configuration for JWT
+  - `model`   --> having different models for mongodb schema `user, person, temp-person, role, login`.
+  - `routes`  --> having different routes files for `login, person, user, roles`. This is having all API `CRUD` logices.
+  -  `authmiddleware.js`  -->  This file is used to `Authentication` user. (`Authorization maintained at client side`).<br>
+                **If user not Authenticated, user not allowed to enter into server API routes.
+  - `server.js`  --> this is `starting` file for server execution.
+  - `package.json`  --> this is project descriptor file.
+     
