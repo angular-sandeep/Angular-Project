@@ -6,7 +6,7 @@
   This consist of many componenets.
   
 - App 
- - Footer-Component  --> having footer of dashboard
- - Header-Component  --> having navbar of dashboard
- - Login-Component   --> having login page with it's functionality and validation
-                         1. error :-> when we enter wrong `username` and/or `password` then error message as `Please enter correct username and password`.
+ -- Footer-Component  --> having footer of dashboard
+ -- Header-Component  --> having navbar of dashboard
+ -- Login-Component   --> having login page with it's functionality and validation
+                         1) error :-> when we enter wrong `username` and/or `password` then error message as `Please enter correct username and password`.
