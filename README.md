@@ -31,4 +31,4 @@
    + `pipe`  --> having `filter-pipe` for `searching`. This pipe used on `User-Status-Component`.
    + `routing-module`  --> having all roting path configuration.
    <hr>
-##### On `user-status` and `person-status` components having, `Approve / Reject` link, that will display (only for pending enteris ** not for already Approved / Rejected enteris) which can only accessiable by `Admin.`
+##### On `user-status` and `person-status` components having, `Approve / Reject` link, that will display (only for pending enteris ** not for already Approved / Rejected enteris) which can only accessiable by `Admin` (not accessibale by `Operator and AccessUser`).
