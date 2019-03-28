@@ -99,7 +99,7 @@ export class NewPersonComponent implements OnInit {
 
       this._newPersonService.getPersonsById(this.PersonId).subscribe(
         (resp: Response) => {
-          if (resp.json().status == 200) {
+          if (resp.json().status === 200) {
             const person = resp.json().data[0];
             this.person = new Person(
               this.PersonId,
@@ -142,7 +142,7 @@ export class NewPersonComponent implements OnInit {
       this.person.CreatedBy = parseInt(localStorage.getItem('_v_it'));
       this._newPersonService.createPerson(this.person).subscribe(
         (resp: Response) => {
-          if (resp.json().status == 200) {
+          if (resp.json().status === 200) {
             this._router.navigate(['/auth']);
           }
         },
@@ -155,7 +155,7 @@ export class NewPersonComponent implements OnInit {
       this.person.CreatedBy = parseInt(localStorage.getItem('_v_it'));
       this._newPersonService.updatePerson(this.person).subscribe(
         (resp: Response) => {
-          if (resp.json().status == 200) {
+          if (resp.json().status === 200) {
             this._router.navigate(['/auth']);
           }
         },
@@ -164,5 +164,9 @@ export class NewPersonComponent implements OnInit {
         }
       );
     }
+  }
+
+  calculateAge() {
+    this.person.Age = new Date().getFullYear() - this.person.DateOfBirth.split('-')[0];
   }
 }

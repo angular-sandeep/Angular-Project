@@ -85,17 +85,21 @@
               name="DateOfBirth"
               [(ngModel)]="person.DateOfBirth"
               formControlName="DateOfBirth"
+              min="2000-01-01" 
+              max="2019-03-28"
+              (change)="calculateAge()"
             />
           </div>
           <div class="form-group col-md-6">
             <!-- {/* Age */} -->
             <label for="Age">Age</label>
             <input
-              type="number"
+              type="text"
               class="form-control"
               id="Age"
               name="Age"
               autocomplete="off"
+              readOnly=true
               [(ngModel)]="person.Age"
               formControlName="Age"
             />

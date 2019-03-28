@@ -7,8 +7,6 @@ const TempPersonModel = require("./../model/tempPerson");
   new person profile creation based on userid
 */
 router.post("/create", (request, response) => {
-  console.log(request.body);
-
   var Person = {
     PersonId: request.body.PersonId,
     FullName: {
@@ -34,7 +32,6 @@ router.post("/create", (request, response) => {
     Education: request.body.Education,
     BirthSign: request.body.BirthSign
   };
-  //console.log(Person);
   if (request.body.CreatedBy == 1) {
     PersonModel.create(Person, (err, res) => {
       if (err) {
@@ -42,6 +39,7 @@ router.post("/create", (request, response) => {
           status: 500,
           error: err
         });
+        return;
       } else {
         response.send({
           status: 200,
@@ -56,6 +54,7 @@ router.post("/create", (request, response) => {
           status: 500,
           error: err
         });
+        return;
       } else {
         response.send({
           status: 200,
@@ -80,6 +79,7 @@ router.get("/:pid", (request, response) => {
         status: 500,
         err: err
       });
+      return;
     } else if (data) {
       response.send({
         status: 200,
@@ -112,6 +112,7 @@ router.post("/", (req, res) => {
           status: 500,
           err: err
         });
+        return;
       } else {
         res.send({
           status: 200,
@@ -135,6 +136,7 @@ router.post("/", (req, res) => {
           status: 500,
           err: err
         });
+        return;
       } else {
         res.send({
           status: 200,
@@ -167,6 +169,7 @@ router.post("/approve", (request, response) => {
             status: 500,
             err: err
           });
+          return;
         } else if (person) {
 
           // preparing person model from temp_person model
@@ -239,120 +242,6 @@ router.post("/approve", (request, response) => {
               }
             });
           });
-          // checking data available in person collection or not
-          // PersonModel.findOne({ PersonId: pid }).exec((err, data) => {
-          //   if (err) {
-          //     console.log(err);
-          //     response.send({ status: 500, err: err });
-          //     return;
-          //   }
-
-          //   if (data === null) {
-          //     console.log("creating new user");
-
-          //     // inserting new entry into person collection
-          //     PersonModel.create(Auth_Person, (err) => {
-          //       if (err) {
-          //         response.send({ status: 500, err: err });
-          //       } else {
-          //         console.log("moved data to person/ new creation");
-
-          //         TempPersonModel.remove({ PersonId: pid }).exec(err =>
-          //           console.log("deleted")
-          //         );
-          //         // getting all remaining temp person
-          //         TempPersonModel.find(
-          //           {},
-          //           {
-          //             _id: 0,
-          //             PersonId: 1,
-          //             FullName: 1,
-          //             Gender: 1,
-          //             City: 1,
-          //             State: 1
-          //           }
-          //         ).exec((err, data) => {
-          //           if (err) {
-          //             response.send({ status: 500, err: err });
-          //           }
-          //           if (data) {
-          //             console.log(data);
-
-          //             response.send({
-          //               status: 200,
-          //               person: data,
-          //               header: [
-          //                 "Person Id",
-          //                 "Full Name",
-          //                 "Gender",
-          //                 "City",
-          //                 "State"
-          //               ]
-          //             });
-          //           } else {
-          //             response.send({
-          //               status: 500,
-          //               message: "some error occured"
-          //             });
-          //           }
-          //         });
-          //       }
-          //     });
-          //   } else {
-          //     // inserting new entry into person collection
-          //     console.log("updating user");
-
-          //     PersonModel.findOneAndUpdate(
-          //       { PersonId: Auth_Person.PersonId },
-          //       Auth_Person,
-          //       (err, d) => {
-          //         if (err) {
-          //           response.send({ status: 500, err: err });
-          //         } else {
-          //           console.log("moved data to person/ update");
-
-          //           TempPersonModel.remove({ PersonId: pid }).exec(err =>
-          //             console.log("deleted")
-          //           );
-          //           // getting all remaining temp person
-          //           TempPersonModel.find(
-          //             {},
-          //             {
-          //               _id: 0,
-          //               PersonId: 1,
-          //               FullName: 1,
-          //               Gender: 1,
-          //               City: 1,
-          //               State: 1
-          //             }
-          //           ).exec((err, data) => {
-          //             if (err) {
-          //               response.send({ status: 500, err: err });
-          //             }
-          //             if (data) {
-          //               response.send({
-          //                 status: 200,
-          //                 person: data,
-          //                 header: [
-          //                   "Person Id",
-          //                   "Full Name",
-          //                   "Gender",
-          //                   "City",
-          //                   "State"
-          //                 ]
-          //               });
-          //             } else {
-          //               response.send({
-          //                 status: 500,
-          //                 message: "some error occured"
-          //               });
-          //             }
-          //           });
-          //         }
-          //       }
-          //     );
-          //   }
-          // });
         } else {
           response.send({
             status: 404,
@@ -382,6 +271,7 @@ router.post("/approve", (request, response) => {
           status: 500,
           err: err
         });
+        return;
       }
       if (data) {
         response.send({
@@ -433,10 +323,6 @@ router.put("/update", (request, response) => {
     BirthSign: request.body.BirthSign
   };
 
-  console.log("inside update");
-
-  console.log(Person);
-
   if (request.body.CreatedBy == 1) {
     PersonModel.update({
       PersonId: Person.PersonId
@@ -446,6 +332,7 @@ router.put("/update", (request, response) => {
           status: 500,
           error: err
         });
+        return;
       } else {
         response.send({
           status: 200,
@@ -464,6 +351,7 @@ router.put("/update", (request, response) => {
             status: 500,
             error: err
           });
+          return;
         } else {
           response.send({
             status: 200,
